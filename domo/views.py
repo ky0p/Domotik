@@ -63,7 +63,7 @@ def change_state(request):
         my_changing_light = Light.objects.get(id=light_id)
 	
 	os.system("gpio mode " + str(my_changing_light.pin) + " out")
-	os.system("gpio write " + str(my_changing_light.pin) + " 1")
+	os.system("gpio write " + str(my_changing_light.pin) + " 0")
 	my_changing_light.state = new_state
         my_changing_light.save()
 
@@ -75,7 +75,7 @@ def change_state(request):
 	    
 	    my_changing_light = Light.objects.get(id=light_id)
 	    os.system("gpio mode " + str(my_changing_light.pin) + " out")
-	    os.system("gpio write " + str(my_changing_light.pin) + " 0")
+	    os.system("gpio write " + str(my_changing_light.pin) + " 1")
 	    
             my_changing_light.state = new_state
             my_changing_light.save()
