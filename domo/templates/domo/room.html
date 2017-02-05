@@ -1,0 +1,118 @@
+{% load bootstrap3 %}
+
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Domotik</title>
+    {% bootstrap_css %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% bootstrap_javascript jquery=1 %}
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid">
+    <div class="container-fluid">
+
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'index' %}">Domotik</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{% url 'index' %}">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                        Accueil
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="{% url 'rooms' %}">
+                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                        Pièces
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'lights' %}">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                        Lumières
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'planning' %}">
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        Planning
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'faq' %}">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                        F.A.Q
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+ </div>
+</nav>
+
+<div class="container-fluids">
+    {% if messages %}
+        {% bootstrap_messages %}
+    {% endif %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+        <h1><img src="/{{ room_obj.picture }}" alt="{{ room_obj.name }}" class="img-thumbnail" width="8%" height="8%">
+                 {{ room_obj.name }} <span class="badge">{{ lights_obj.count }}</span>
+        </h1></div>
+
+   {% if lights_obj %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>État</th>
+            </tr>
+            {% for light in lights_obj %}
+            <tr>
+                <td>{{ light.id }}</td>
+                <td>{{ light.name }}</td>
+                <td>
+                <form id="myform" action="/domo/change_state/" method="post">{% csrf_token %}
+                {% if light.state == True %}
+                        <input type="hidden" value="{{ light.id }};False" name="hidden_change_state">
+                        <input type="checkbox" value="{{ light.id }};False" name="change_state" onChange="this.form.submit()" checked data-toggle="toggle">
+                {% else %}
+                        <input type="checkbox" value="{{ light.id }};True" name="change_state" onChange="this.form.submit()" data-toggle="toggle">
+                        {% endif %}
+                </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% else %}
+    <table class="table table-striped"><tr><th>Aucun élément à afficher.</th></tr></table>
+    {% endif %}
+
+</div>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+</html>

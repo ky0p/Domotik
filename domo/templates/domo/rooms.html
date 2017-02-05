@@ -1,0 +1,113 @@
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Domotik</title>
+    {% bootstrap_css %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% bootstrap_javascript jquery=1 %}
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{% url 'index' %}">Domotik</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{% url 'index' %}">
+                        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                        Accueil
+                    </a>
+                </li>
+
+                <li class="active">
+                    <a href="{% url 'rooms' %}">
+                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                        Pièces
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'lights' %}">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                        Lumières
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'planning' %}">
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        Planning
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'faq' %}">
+                        <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                        F.A.Q
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+ </div>
+</nav>
+
+<div class="container-fluid">
+    {% if messages %}
+        {% bootstrap_messages %}
+    {% endif %}
+
+    <h1>
+        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Pièces
+        <span class="badge">{{ rooms_obj.count }}</span>
+    </h1>
+
+    <div class="row">
+
+        {% for room in rooms_obj %}
+        <div class="col-xs-6 col-sm-2 col-md-2">
+            <div class="thumbnail">
+                <a href="./{{ room.id }}">
+                    <img src="/{{ room.picture }}" alt="{{ room.name }}" class="img-thumbnail" width="80%" height="80%">
+                    <div class="caption"><center>
+                        <h3><button class="btn btn-default btn-lg" type="button">
+                            <span class="badge">{{ room_obj.count }}</span> {{ room.name }}</button>
+                        </h3></center>
+                    </div></a>
+            </div>
+        </div>
+            {% endfor %}
+
+        <div class="col-xs-6 col-sm-2 col-md-2">
+            <div class="thumbnail">
+                <a href="#">
+                    <img src="{% static 'domo/plus.png' %}" alt="Plus" class="img-thumbnail" width="80%" height="80%">
+                    <div class="caption"><center>
+                        <h3><button class="btn btn-default btn-lg" type="button">
+                            <span class="badge"></span> Ajouter</button>
+                        </h3></center>
+                    </div></a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
